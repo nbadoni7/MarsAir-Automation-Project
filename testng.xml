@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="MarsAir Automation Suite" parallel="false" thread-count="1">
+    <test name="MarsAir TestNG Runner">
+        <classes>
+            <!-- Add the fully qualified name of your TestNG runner class -->
+            <class name="com.masairlines.runners.TestRunner" />
+        </classes>
+    </test>
+</suite>
