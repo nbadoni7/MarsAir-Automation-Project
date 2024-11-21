@@ -1,8 +1,10 @@
 package com.marsairlines.hooks;
 
 import com.marsairlines.utils.DriverFactory;
+import com.marsairlines.utils.ScreenshotUtils;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,14 +14,20 @@ public class Hooks {
     @Before
     public void setUp() {
         logger.info("Initializing WebDriver...");
-        DriverFactory.getInstance().setUpDriver();
+        DriverFactory.setUpDriver();
         logger.info("WebDriver initialized successfully.");
     }
 
     @After
-    public void tearDown() {
+    public void tearDown(Scenario scenario) {
         logger.info("Closing WebDriver...");
-        DriverFactory.getInstance().tearDownDriver();
+
+        if (scenario.isFailed()) {
+            // Take a screenshot and attach it to the report
+            ScreenshotUtils.takeScreenshotAndAttachToReport(DriverFactory.getDriver(), scenario);
+        }
+
+        DriverFactory.tearDownDriver();
         logger.info("WebDriver closed successfully.");
     }
 }

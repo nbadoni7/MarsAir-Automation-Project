@@ -1,6 +1,7 @@
 package com.marsairlines.StepDefinitions;
 
 import com.marsairlines.pages.MarsAirHomePage;
+import com.marsairlines.pages.SearchResultPage;
 import com.marsairlines.utils.DriverFactory;
 
 import io.cucumber.java.en.*;
@@ -10,21 +11,24 @@ import org.openqa.selenium.WebDriver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 public class MarsAirSteps {
 
     private static final Logger logger = LogManager.getLogger(MarsAirSteps.class);
     private MarsAirHomePage marsAirHomePage;
+    private SearchResultPage searchResultPage;
 
     private WebDriver driver;
 
     // Initialize page objects using the DriverFactory
     public MarsAirSteps() {
-        this.driver = DriverFactory.getInstance().getDriver();
+        this.driver = DriverFactory.getDriver();
 
         // Initialize MarsAirHomePage with the WebDriver instance
         this.marsAirHomePage = new MarsAirHomePage(driver);
+        this.searchResultPage = new SearchResultPage(driver);
     }
 
     @Given("the user is on the MarsAir flight search page")
@@ -94,5 +98,11 @@ public class MarsAirSteps {
         String flightOptionsMessage = marsAirHomePage.getFlightOptionsMessage();
         assertNotNull(flightOptionsMessage, "The search operation did not proceed as expected.");
         logger.info("Search operation proceeded successfully.");
+    }
+
+    @And("the search results page should not be displayed")
+    public void theSearchResultsPageShouldNotBeDisplayed() {
+        boolean isDisplayed = searchResultPage.isSearchResultsDisplayed();
+        assertFalse(isDisplayed, "The search results page should not be displayed.");
     }
 }

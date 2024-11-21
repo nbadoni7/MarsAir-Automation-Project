@@ -2,43 +2,46 @@ package com.marsairlines.utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class DriverFactory {
-    private static DriverFactory instance;
-    private WebDriver driver;
 
-    // Private constructor to enforce Singleton pattern
+    // ThreadLocal to ensure each thread gets its own WebDriver instance
+    private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
+
+    // Private constructor to prevent instantiation
     private DriverFactory() {}
 
-    // Singleton instance
-    public static DriverFactory getInstance() {
-        if (instance == null) {
-            instance = new DriverFactory();
+    // Method to get the WebDriver instance for the current thread
+    public static WebDriver getDriver() {
+        if (driverThreadLocal.get() == null) {
+            setUpDriver(); // Initialize the WebDriver if not already initialized
         }
-        return instance;
+        return driverThreadLocal.get();
     }
 
-    // Getter for WebDriver instance
-    public WebDriver getDriver() {
-        if (driver == null) {
-            throw new IllegalStateException("WebDriver is not initialized. Ensure setup is called before using the driver.");
-        }
-        return driver;
-    }
+    // Method to initialize the WebDriver for the current thread
+    public static void setUpDriver() {
+        if (driverThreadLocal.get() == null) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--user-data-dir=/tmp/chrome-profile-" + Thread.currentThread().getId());
+            options.addArguments("--remote-debugging-port=" + (9222 + Thread.currentThread().getId()));
 
-    // Initialize WebDriver
-    public void setUpDriver() {
-        if (driver == null) {
-            driver = new ChromeDriver(); // Replace with desired WebDriver
+            // Initialize ChromeDriver with the options
+            WebDriver driver = new ChromeDriver(options);
             driver.manage().window().maximize();
+            driverThreadLocal.set(driver);
         }
     }
 
-    // Tear down WebDriver
-    public void tearDownDriver() {
+    // Method to tear down the WebDriver for the current thread
+    public static void tearDownDriver() {
+        WebDriver driver = driverThreadLocal.get();
         if (driver != null) {
             driver.quit();
-            driver = null;
+            driverThreadLocal.remove(); // Remove the WebDriver instance for the current thread
         }
     }
 }

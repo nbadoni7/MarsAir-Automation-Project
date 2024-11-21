@@ -60,6 +60,7 @@ public class MarsAirHomePage  extends BasePage {
     // Click the "Search" button
     public void clickSearchButton() {
         clickElement(searchButton);
+
     }
 
     // Retrieve the message displayed for flight options availability
@@ -81,4 +82,6 @@ public class MarsAirHomePage  extends BasePage {
     public boolean isReturningDropdownDisplayed() {
         return isElementDisplayed(returningDropdownLabel) && isElementDisplayed(returningDropdownField);
     }
+
+
 }

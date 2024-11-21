@@ -1,5 +1,6 @@
 package com.marsairlines.pages;
 
+import com.marsairlines.utils.ConfigUtils;
 import com.marsairlines.utils.ScreenshotUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,14 +8,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class BasePage {
     protected  WebDriver driver;
     // Shared across all pages
     private static final Logger logger = LogManager.getLogger(BasePage.class);
+    WebDriverWait wait = null;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
+
+        wait = new WebDriverWait(driver, Duration.ofSeconds(Integer.parseInt(ConfigUtils.getProperty("explicitWaitTime"))));
     }
 
     // Set the driver instance
@@ -96,6 +104,8 @@ public class BasePage {
     // Verify if an element is displayed
     public boolean isElementDisplayed(WebElement element) {
         try {
+            // Wait until the element is visible
+            wait.until(ExpectedConditions.visibilityOf(element));
             boolean isDisplayed = element.isDisplayed();
             logger.info("Element '{}' is displayed: {}", element, isDisplayed);
             return isDisplayed;
