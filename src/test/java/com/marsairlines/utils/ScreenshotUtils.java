@@ -1,4 +1,4 @@
-package com.masairlines.utils;
+package com.marsairlines.utils;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;

@@ -1,7 +1,7 @@
-package com.masairlines.StepDefinitions;
+package com.marsairlines.StepDefinitions;
 
-import com.masairlines.pages.MarsAirHomePage;
-import com.masairlines.utils.DriverFactory;
+import com.marsairlines.pages.MarsAirHomePage;
+import com.marsairlines.utils.DriverFactory;
 
 import io.cucumber.java.en.*;
 import org.apache.logging.log4j.LogManager;

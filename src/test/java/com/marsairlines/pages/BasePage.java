@@ -1,6 +1,6 @@
-package com.masairlines.pages;
+package com.marsairlines.pages;
 
-import com.masairlines.utils.ScreenshotUtils;
+import com.marsairlines.utils.ScreenshotUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;

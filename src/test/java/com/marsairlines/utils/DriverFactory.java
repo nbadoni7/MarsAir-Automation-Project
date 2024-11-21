@@ -1,4 +1,4 @@
-package com.masairlines.utils;
+package com.marsairlines.utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

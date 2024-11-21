@@ -1,4 +1,4 @@
-package com.masairlines.utils;
+package com.marsairlines.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;

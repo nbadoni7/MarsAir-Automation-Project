@@ -1,6 +1,6 @@
-package com.masairlines.pages;
+package com.marsairlines.pages;
 
-import com.masairlines.utils.ConfigUtils;
+import com.marsairlines.utils.ConfigUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

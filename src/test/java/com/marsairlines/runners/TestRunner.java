@@ -1,4 +1,4 @@
-package com.masairlines.runners;
+package com.marsairlines.runners;
 
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
@@ -8,8 +8,8 @@ import org.testng.annotations.DataProvider;
 @CucumberOptions(
         features = "src/test/resources/features",  // Path to feature files
         glue = {
-                "com.masairlines.hooks", // Hooks package
-                "com.masairlines.StepDefinitions" // Step definitions package
+                "com.marsairlines.hooks", // Hooks package
+                "com.marsairlines.StepDefinitions" // Step definitions package
         },  // Path to step definitions
         plugin = {
                 "pretty",

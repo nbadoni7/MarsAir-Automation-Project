@@ -1,6 +1,6 @@
-package com.masairlines.hooks;
+package com.marsairlines.hooks;
 
-import com.masairlines.utils.DriverFactory;
+import com.marsairlines.utils.DriverFactory;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import org.apache.logging.log4j.LogManager;

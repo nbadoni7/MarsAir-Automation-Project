@@ -8,7 +8,7 @@
     <artifactId>MarsAir-Automation-Project</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
+    
     <dependencies>
         <!-- Selenium Java -->
         <dependency>

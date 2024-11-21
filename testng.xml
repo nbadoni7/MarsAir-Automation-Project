@@ -4,7 +4,7 @@
     <test name="MarsAir TestNG Runner">
         <classes>
             <!-- Add the fully qualified name of your TestNG runner class -->
-            <class name="com.masairlines.runners.TestRunner" />
+            <class name="com.marsairlines.runners.TestRunner" />
         </classes>
     </test>
 </suite>
