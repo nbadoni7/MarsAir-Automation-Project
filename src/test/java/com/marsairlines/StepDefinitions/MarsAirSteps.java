@@ -4,10 +4,12 @@ import com.marsairlines.pages.MarsAirHomePage;
 import com.marsairlines.pages.SearchResultPage;
 import com.marsairlines.utils.DriverFactory;
 
+import com.marsairlines.utils.Utils;
 import io.cucumber.java.en.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -67,36 +69,45 @@ public class MarsAirSteps {
 
     @Then("the system should display {string}")
     public void theSystemShouldDisplay(String expectedMessage) {
-        String actualMessage = marsAirHomePage.getFlightOptionsMessage();
-        assertEquals(expectedMessage, actualMessage, "The displayed message does not match the expected value.");
+        String resultMessage = marsAirHomePage.getFlightResultMessage();
+        String resultSubMessage = marsAirHomePage.getFlightResultSubMessage();
+
+        // Check if additional result sub message is available
+        if(resultSubMessage != null
+                && !resultSubMessage.equalsIgnoreCase("Back")){
+            resultMessage = resultMessage.concat(" ").concat(resultSubMessage);
+        }
+
+        logger.info("Actual message: {}", resultMessage);
+        Assert.assertEquals(expectedMessage, resultMessage);
         logger.info("Verified message: {}", expectedMessage);
     }
 
     @Then("the system should display the message {string}")
     public void theSystemShouldDisplayTheMessage(String expectedErrorMessage) {
         String actualErrorMessage = marsAirHomePage.getErrorMessage();
-        assertEquals(expectedErrorMessage, actualErrorMessage, "The error message does not match the expected value.");
+        Assert.assertEquals(expectedErrorMessage, actualErrorMessage);
         logger.info("Verified error message: {}", expectedErrorMessage);
     }
 
     @And("there are no seats available for the selected itinerary")
     public void thereAreNoSeatsAvailableForTheSelectedItinerary() {
-        String actualMessage = marsAirHomePage.getFlightOptionsMessage();
-        assertEquals("Sorry, there are no more seats available.", actualMessage, "The message does not indicate unavailability of seats.");
+        String actualMessage = marsAirHomePage.getFlightResultMessage();
+        Assert.assertEquals("Sorry, there are no more seats available.", actualMessage);
         logger.info("Verified message: No seats available.");
     }
 
     @And("seats are available for the selected itinerary")
     public void seatsAreAvailableForTheSelectedItinerary() {
-        String actualMessage = marsAirHomePage.getFlightOptionsMessage();
-        assertEquals("Seats available! Call 0800 MARSAIR to book!", actualMessage, "The message does not indicate seat availability.");
+        String actualMessage = marsAirHomePage.getFlightResultMessage();
+        Assert.assertEquals("Seats available! Call 0800 MARSAIR to book!", actualMessage);
         logger.info("Verified message: Seats available.");
     }
 
     @Then("the system should allow the search operation to proceed")
     public void theSystemShouldAllowTheSearchOperationToProceed() {
-        String flightOptionsMessage = marsAirHomePage.getFlightOptionsMessage();
-        assertNotNull(flightOptionsMessage, "The search operation did not proceed as expected.");
+        String flightOptionsMessage = marsAirHomePage.getFlightResultMessage();
+        Assert.assertNotNull(flightOptionsMessage, "The search operation did not proceed as expected.");
         logger.info("Search operation proceeded successfully.");
     }
 
@@ -104,5 +115,33 @@ public class MarsAirSteps {
     public void theSearchResultsPageShouldNotBeDisplayed() {
         boolean isDisplayed = searchResultPage.isSearchResultsDisplayed();
         assertFalse(isDisplayed, "The search results page should not be displayed.");
+    }
+
+    @When("the user enters a valid promotional code {string}")
+    public void theUserEntersAValidPromotionalCode(String promoCode) {
+        marsAirHomePage.enterPromotionalCode(promoCode);
+    }
+
+    @Then("the system should display the expected message as {string} for {string} promotion code")
+    public void theSystemShouldDisplayTheExpectedPromotionalCode(String expectedMessage, String promotion_code) {
+        String promotion_code_message = marsAirHomePage.getPromotionalCode();
+
+        if (promotion_code_message.contains("Sorry")) {
+            Assert.assertEquals(promotion_code_message, expectedMessage.replace("{promo_code}", promotion_code), "The promotion code is valid.");
+        } else {
+            //Try to fetch the discount percentage form the entered promotional code
+            Double discount_percentage_value = Utils.extractAndConvertToPercentage(promotion_code);
+            String generate_expectedMessage = null;
+
+            //Generate the discount message
+            if (discount_percentage_value != null) {
+                generate_expectedMessage = expectedMessage
+                        .replace("{promo_code}", promotion_code)
+                        .replace("{discount_per}", String.valueOf(discount_percentage_value.intValue()));
+            }
+
+            //Assert the generated message
+            Assert.assertEquals(promotion_code_message, generate_expectedMessage, "The discount code applied is invalid.");
+        }
     }
 }

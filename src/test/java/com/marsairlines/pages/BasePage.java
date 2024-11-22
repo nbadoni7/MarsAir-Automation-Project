@@ -105,7 +105,7 @@ public class BasePage {
     public boolean isElementDisplayed(WebElement element) {
         try {
             // Wait until the element is visible
-            wait.until(ExpectedConditions.visibilityOf(element));
+            //wait.until(ExpectedConditions.visibilityOf(element));
             boolean isDisplayed = element.isDisplayed();
             logger.info("Element '{}' is displayed: {}", element, isDisplayed);
             return isDisplayed;

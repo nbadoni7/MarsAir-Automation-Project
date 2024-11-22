@@ -30,8 +30,17 @@ public class MarsAirHomePage  extends BasePage {
     @FindBy(xpath = "//input[@value='Search']")
     public WebElement searchButton;
 
-    @FindBy(id = "flight-options-message")
-    public WebElement flightOptionsMessage;
+    @FindBy(xpath = "//*[@id='content']/p[1]")
+    public WebElement flightResultMessage;
+
+    @FindBy(xpath = "//*[@id='content']/p[2]")
+    public WebElement flightResultSubMessage;
+
+    @FindBy(id="promotional_code")
+    private WebElement promoCodeField;
+
+    @FindBy(xpath = "//p[@class='promo_code']")
+    private WebElement promoCodeMessage;
 
     @FindBy(id = "error-message")
     public WebElement errorMessage;
@@ -63,9 +72,14 @@ public class MarsAirHomePage  extends BasePage {
 
     }
 
-    // Retrieve the message displayed for flight options availability
-    public String getFlightOptionsMessage() {
-        return getElementText(flightOptionsMessage);
+    // Retrieve the result message displayed for flight options availability
+    public String getFlightResultMessage() {
+       return getElementText(flightResultMessage);
+    }
+
+    // Retrieve the result sub message displayed for flight options availability
+    public String getFlightResultSubMessage() {
+        return getElementText(flightResultSubMessage);
     }
 
     // Retrieve the error message displayed on the page
@@ -83,5 +97,11 @@ public class MarsAirHomePage  extends BasePage {
         return isElementDisplayed(returningDropdownLabel) && isElementDisplayed(returningDropdownField);
     }
 
+    public void enterPromotionalCode(String promoCode) {
+        promoCodeField.sendKeys(promoCode);
+    }
 
+    public String getPromotionalCode() {
+        return promoCodeMessage.getText();
+    }
 }

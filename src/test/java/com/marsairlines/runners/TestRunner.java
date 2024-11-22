@@ -17,12 +17,12 @@ import org.testng.annotations.DataProvider;
                 "json:target/cucumber-reports/cucumber.json"
         },
         monochrome = true,
-        tags = "@SmokeTest"  // Specify the tag(s) to filter scenarios
+        tags = " @runTest"  // Specify the tag(s) to filter scenarios
 )
 public class TestRunner extends AbstractTestNGCucumberTests {
 
         @Override
-        @DataProvider(parallel = true)  // Enable parallel execution if needed
+        @DataProvider(parallel = false)  // Enable parallel execution if needed
         public Object[][] scenarios() {
                 return super.scenarios();
         }
